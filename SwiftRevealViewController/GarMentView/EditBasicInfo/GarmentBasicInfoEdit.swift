@@ -37,6 +37,8 @@ class GarmentBasicInfoEdit: UIViewController ,UITableViewDelegate,UITableViewDat
     }
     
     func setupView(){
+        print("setupView...")
+
         let nib = UINib(nibName: "cell_imgCatelog", bundle: nil)
         tblView.register(nib, forCellReuseIdentifier: "id_cell_imgCatelog")
         
