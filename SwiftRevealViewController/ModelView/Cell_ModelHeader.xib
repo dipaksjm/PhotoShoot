@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="Cell_ModelHeader" id="KGk-i7-Jjw" customClass="Cell_ModelHeader" customModule="SwiftRevealViewController" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="317"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="375" height="316.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wc5-WB-kVw">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="317"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mJu-hY-J09">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="288"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="288" id="cna-sL-cNQ"/>
+                                </constraints>
+                            </scrollView>
+                            <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="BrP-yb-nkY">
+                                <rect key="frame" x="37" y="287" width="300" height="30"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="5JW-XF-V28"/>
+                                    <constraint firstAttribute="width" constant="300" id="vvt-se-I3F"/>
+                                </constraints>
+                                <color key="pageIndicatorTintColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="currentPageIndicatorTintColor" red="0.48296415809999999" green="0.87003630399999998" blue="0.64713704589999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </pageControl>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="mJu-hY-J09" firstAttribute="top" secondItem="Wc5-WB-kVw" secondAttribute="top" id="0Tq-Vq-qd0"/>
+                            <constraint firstAttribute="bottom" secondItem="BrP-yb-nkY" secondAttribute="bottom" id="Urz-7G-Wgf"/>
+                            <constraint firstAttribute="height" constant="317" id="bkZ-Jz-clj"/>
+                            <constraint firstItem="BrP-yb-nkY" firstAttribute="centerX" secondItem="Wc5-WB-kVw" secondAttribute="centerX" id="j8W-Ke-tWw"/>
+                            <constraint firstAttribute="trailing" secondItem="mJu-hY-J09" secondAttribute="trailing" id="w5t-mJ-Kzc"/>
+                            <constraint firstItem="mJu-hY-J09" firstAttribute="leading" secondItem="Wc5-WB-kVw" secondAttribute="leading" id="woy-fL-Or3"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="2UW-xc-Fy2"/>
+                    </view>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="v3M-78-8sl">
+                        <rect key="frame" x="332" y="8" width="35" height="35"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="35" id="Sd0-Vv-58H"/>
+                            <constraint firstAttribute="width" constant="35" id="weg-pj-Wm6"/>
+                        </constraints>
+                        <state key="normal" backgroundImage="editName.png"/>
+                    </button>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="Wc5-WB-kVw" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="1Kb-bb-ASH"/>
+                    <constraint firstItem="v3M-78-8sl" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="N2x-b8-eIe"/>
+                    <constraint firstItem="Wc5-WB-kVw" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="R37-fZ-Xqu"/>
+                    <constraint firstAttribute="trailing" secondItem="Wc5-WB-kVw" secondAttribute="trailing" id="R6a-lT-Gkn"/>
+                    <constraint firstAttribute="trailing" secondItem="v3M-78-8sl" secondAttribute="trailing" constant="8" id="ozv-H5-ese"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="btnHeaderEdit" destination="v3M-78-8sl" id="RRY-DW-Qhw"/>
+                <outlet property="pageControl" destination="BrP-yb-nkY" id="ARm-GH-1Th"/>
+                <outlet property="scroll" destination="mJu-hY-J09" id="abj-mg-uVv"/>
+                <outlet property="viewscrll" destination="Wc5-WB-kVw" id="WlO-j0-7LF"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="editName.png" width="48" height="48"/>
+    </resources>
+</document>

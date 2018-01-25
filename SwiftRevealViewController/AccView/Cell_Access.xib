@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Roboto-Regular.ttf">
+            <string>Roboto-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="Cell_Access" rowHeight="76" id="KGk-i7-Jjw" customClass="Cell_Access" customModule="SwiftRevealViewController" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="76"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="75.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="4.png" translatesAutoresizingMaskIntoConstraints="NO" id="5IR-lV-PEd">
+                        <rect key="frame" x="10" y="7" width="60" height="60"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="60" id="H3H-T4-EhO"/>
+                            <constraint firstAttribute="width" constant="60" id="lNW-Ps-9FI"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ACCESSORIES NAME" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kOL-uT-dXl">
+                        <rect key="frame" x="78" y="7" width="193" height="21"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="21" id="AO1-aw-f5y"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="14"/>
+                        <color key="textColor" red="0.48296415809999999" green="0.87003630399999998" blue="0.64713704589999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Accressories description will go here" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aVB-Ao-QJW">
+                        <rect key="frame" x="78" y="29" width="193" height="36.5"/>
+                        <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="12"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CZb-7F-Ufe">
+                        <rect key="frame" x="279" y="22" width="32" height="32"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="32" id="Cat-sz-y51"/>
+                            <constraint firstAttribute="width" constant="32" id="eb0-rP-aX6"/>
+                        </constraints>
+                        <state key="normal" image="arrow.png"/>
+                    </button>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="aVB-Ao-QJW" firstAttribute="leading" secondItem="5IR-lV-PEd" secondAttribute="trailing" constant="8" id="3mn-C8-fCB"/>
+                    <constraint firstItem="kOL-uT-dXl" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="7" id="4d4-nH-UV5"/>
+                    <constraint firstItem="CZb-7F-Ufe" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="22" id="7e5-DI-g3k"/>
+                    <constraint firstItem="CZb-7F-Ufe" firstAttribute="leading" secondItem="aVB-Ao-QJW" secondAttribute="trailing" constant="8" id="8y9-Df-eZ7"/>
+                    <constraint firstItem="5IR-lV-PEd" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="EjL-vM-jaL"/>
+                    <constraint firstAttribute="bottom" secondItem="aVB-Ao-QJW" secondAttribute="bottom" constant="10" id="N7c-sK-tBW"/>
+                    <constraint firstItem="aVB-Ao-QJW" firstAttribute="top" secondItem="kOL-uT-dXl" secondAttribute="bottom" constant="1" id="Rbp-cg-Z6l"/>
+                    <constraint firstItem="5IR-lV-PEd" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="7" id="j0o-sr-fvM"/>
+                    <constraint firstAttribute="trailing" secondItem="CZb-7F-Ufe" secondAttribute="trailing" constant="9" id="knj-hN-hJs"/>
+                    <constraint firstItem="kOL-uT-dXl" firstAttribute="leading" secondItem="5IR-lV-PEd" secondAttribute="trailing" constant="8" id="l8V-Yx-laC"/>
+                    <constraint firstItem="CZb-7F-Ufe" firstAttribute="leading" secondItem="kOL-uT-dXl" secondAttribute="trailing" constant="8" id="sqB-cJ-Igz"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="btn_AccCU" destination="CZb-7F-Ufe" id="GqV-bU-zOJ"/>
+                <outlet property="img_Acc" destination="5IR-lV-PEd" id="n4e-hM-eEI"/>
+                <outlet property="layout_btnW" destination="eb0-rP-aX6" id="BSR-nY-Fo8"/>
+                <outlet property="lbl_AccDes" destination="aVB-Ao-QJW" id="a6J-bO-mSJ"/>
+                <outlet property="lbl_AccName" destination="kOL-uT-dXl" id="dtL-6G-AQS"/>
+            </connections>
+            <point key="canvasLocation" x="-107" y="-178"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="4.png" width="147" height="155"/>
+        <image name="arrow.png" width="37" height="60"/>
+    </resources>
+</document>

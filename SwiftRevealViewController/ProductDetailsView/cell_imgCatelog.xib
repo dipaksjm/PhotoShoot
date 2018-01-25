@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="id_cell_imgCatelog" rowHeight="251" id="KGk-i7-Jjw" customClass="cell_imgCatelog" customModule="SwiftRevealViewController" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="251"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="250.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lsr-aK-Cu2">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="212"/>
+                    </scrollView>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="fill" contentVerticalAlignment="fill" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="heG-ta-p2Y">
+                        <rect key="frame" x="268" y="4" width="48" height="48"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="48" id="POX-Zo-gbC"/>
+                            <constraint firstAttribute="width" constant="48" id="fhR-BY-gzP"/>
+                        </constraints>
+                        <inset key="imageEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
+                        <state key="normal" image="editPhoto.png"/>
+                    </button>
+                    <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="10" translatesAutoresizingMaskIntoConstraints="NO" id="oXn-1a-hTh">
+                        <rect key="frame" x="0.0" y="213" width="320" height="37"/>
+                        <color key="backgroundColor" red="0.00029243511379999998" green="0.67363506559999997" blue="0.26797103880000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="37" id="bUk-rj-Ro7"/>
+                        </constraints>
+                    </pageControl>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="oXn-1a-hTh" secondAttribute="trailing" id="4qr-4v-w3q"/>
+                    <constraint firstItem="lsr-aK-Cu2" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="CD7-Ch-Vbv"/>
+                    <constraint firstItem="lsr-aK-Cu2" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="KZD-U1-1iu"/>
+                    <constraint firstAttribute="trailing" secondItem="heG-ta-p2Y" secondAttribute="trailing" constant="4" id="Kbb-02-yNc"/>
+                    <constraint firstItem="oXn-1a-hTh" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="MJa-Pg-rMo"/>
+                    <constraint firstAttribute="trailing" secondItem="lsr-aK-Cu2" secondAttribute="trailing" id="ZOQ-ux-smv"/>
+                    <constraint firstAttribute="bottom" secondItem="oXn-1a-hTh" secondAttribute="bottom" constant="0.5" id="c6L-Nl-Bi6"/>
+                    <constraint firstItem="heG-ta-p2Y" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="4" id="jO1-4x-yDu"/>
+                    <constraint firstItem="oXn-1a-hTh" firstAttribute="top" secondItem="lsr-aK-Cu2" secondAttribute="bottom" constant="1" id="zFK-0I-3fW"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="btnEditPhoto" destination="heG-ta-p2Y" id="Zio-lu-XCA"/>
+                <outlet property="pcImage" destination="oXn-1a-hTh" id="3up-t5-rOj"/>
+                <outlet property="svMain" destination="lsr-aK-Cu2" id="TOt-iJ-CFA"/>
+            </connections>
+            <point key="canvasLocation" x="-22" y="-19.5"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="editPhoto.png" width="48" height="48"/>
+    </resources>
+</document>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="id_cell_AddSchduler_Dropdown" id="KGk-i7-Jjw" customClass="cell_AddSchduler_Dropdown" customModule="SwiftRevealViewController" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="61"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="60.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aw9-2K-Pox">
+                        <rect key="frame" x="10" y="5" width="300" height="50"/>
+                        <subviews>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="iVj-ID-p4i">
+                                <rect key="frame" x="3" y="0.0" width="297" height="50"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="fill" contentVerticalAlignment="fill" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xvi-Xi-EZZ">
+                                <rect key="frame" x="255" y="3" width="44" height="44"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="44" id="peu-c0-CT7"/>
+                                    <constraint firstAttribute="height" constant="44" id="rFc-u5-lRp"/>
+                                </constraints>
+                                <inset key="imageEdgeInsets" minX="25" minY="15" maxX="5" maxY="15"/>
+                                <state key="normal" image="down_arrow.png">
+                                    <color key="titleColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Xvi-Xi-EZZ" firstAttribute="centerY" secondItem="aw9-2K-Pox" secondAttribute="centerY" id="2Tu-31-JOn"/>
+                            <constraint firstItem="iVj-ID-p4i" firstAttribute="leading" secondItem="aw9-2K-Pox" secondAttribute="leading" constant="3" id="EcR-E8-XeV"/>
+                            <constraint firstAttribute="trailing" secondItem="Xvi-Xi-EZZ" secondAttribute="trailing" constant="1" id="ZIL-QC-pmV"/>
+                            <constraint firstAttribute="trailing" secondItem="iVj-ID-p4i" secondAttribute="trailing" id="kbi-S7-zLR"/>
+                            <constraint firstItem="iVj-ID-p4i" firstAttribute="top" secondItem="aw9-2K-Pox" secondAttribute="top" id="ldr-rM-BjC"/>
+                            <constraint firstAttribute="bottom" secondItem="iVj-ID-p4i" secondAttribute="bottom" id="tFo-dz-9ai"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="aw9-2K-Pox" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="5" id="B0B-w9-Kpa"/>
+                    <constraint firstAttribute="trailing" secondItem="aw9-2K-Pox" secondAttribute="trailing" constant="10" id="CHv-LX-Jom"/>
+                    <constraint firstItem="aw9-2K-Pox" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="PaU-Ob-84O"/>
+                    <constraint firstAttribute="bottom" secondItem="aw9-2K-Pox" secondAttribute="bottom" constant="5.5" id="yqq-SY-pvq"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="txtDropdown" destination="iVj-ID-p4i" id="0A0-Za-1di"/>
+                <outlet property="viewMain" destination="aw9-2K-Pox" id="Ozz-fT-QUa"/>
+            </connections>
+            <point key="canvasLocation" x="-19" y="-104.5"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="down_arrow.png" width="18" height="16"/>
+    </resources>
+</document>

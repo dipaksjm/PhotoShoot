@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Roboto-Bold_1.ttf">
+            <string>Roboto-Bold</string>
+        </array>
+        <array key="Triomphe-Bold.ttf">
+            <string>Triomphe-Bold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AccessoriesDetailsViewController" customModule="SwiftRevealViewController" customModuleProvider="target">
+            <connections>
+                <outlet property="tblView" destination="kFh-Nj-zWA" id="42k-JI-w1l"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3yX-T9-cfM">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="64"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ACCESSORIES" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5gf-FA-mdy">
+                            <rect key="frame" x="60" y="24" width="255" height="35"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="35" id="QRJ-dT-XCj"/>
+                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="255" id="lzd-yv-60g"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Triomphe-Bold" family="Triomphe" pointSize="20"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="S8d-ws-FFO">
+                            <rect key="frame" x="0.0" y="14" width="50" height="50"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="50" id="dFZ-Zp-X1X"/>
+                                <constraint firstAttribute="height" constant="50" id="xXg-Ph-XuK"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <state key="normal" image="arrowTop.png"/>
+                            <connections>
+                                <action selector="action_Back:" destination="-1" eventType="touchUpInside" id="BHY-TF-zqB"/>
+                            </connections>
+                        </button>
+                        <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AZq-Dc-wyp">
+                            <rect key="frame" x="325" y="14" width="50" height="50"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="50" id="evn-Xj-8FT"/>
+                                <constraint firstAttribute="width" constant="50" id="fO6-pC-MXX"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
+                            <state key="normal" title="SAVE"/>
+                            <connections>
+                                <action selector="addEditAccessories" destination="-1" eventType="touchUpInside" id="tv4-TQ-Na9"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" red="0.3826444745" green="0.69912677999999995" blue="0.51852017640000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="AZq-Dc-wyp" secondAttribute="trailing" id="FpO-w2-tTo"/>
+                        <constraint firstItem="5gf-FA-mdy" firstAttribute="centerX" secondItem="3yX-T9-cfM" secondAttribute="centerX" id="GpS-6J-Hic"/>
+                        <constraint firstItem="5gf-FA-mdy" firstAttribute="top" secondItem="3yX-T9-cfM" secondAttribute="top" constant="24" id="M9z-ce-fbO"/>
+                        <constraint firstAttribute="height" constant="64" id="OQj-lQ-5Cx"/>
+                        <constraint firstAttribute="bottom" secondItem="S8d-ws-FFO" secondAttribute="bottom" id="WPv-Pn-hrY"/>
+                        <constraint firstItem="S8d-ws-FFO" firstAttribute="leading" secondItem="3yX-T9-cfM" secondAttribute="leading" id="XWc-V8-jE3"/>
+                        <constraint firstAttribute="bottom" secondItem="AZq-Dc-wyp" secondAttribute="bottom" id="etF-XG-JUI"/>
+                    </constraints>
+                </view>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="kFh-Nj-zWA">
+                    <rect key="frame" x="0.0" y="64" width="375" height="555"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="Xnl-fy-m0Y"/>
+                        <outlet property="delegate" destination="-1" id="IGY-tj-dG3"/>
+                    </connections>
+                </tableView>
+                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a86-B6-Xol">
+                    <rect key="frame" x="0.0" y="619" width="375" height="48"/>
+                    <color key="backgroundColor" red="0.48296415809999999" green="0.87003630399999998" blue="0.64713704589999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="48" id="Sdw-Lm-6dd"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="18"/>
+                    <state key="normal" title="SELECT">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <connections>
+                        <action selector="action_Done:" destination="-1" eventType="touchUpInside" id="MxT-3v-j7H"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="kFh-Nj-zWA" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="2Oz-SD-ZKG"/>
+                <constraint firstItem="a86-B6-Xol" firstAttribute="top" secondItem="kFh-Nj-zWA" secondAttribute="bottom" id="AU9-1i-kKE"/>
+                <constraint firstItem="a86-B6-Xol" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="DDA-9Y-afr"/>
+                <constraint firstItem="a86-B6-Xol" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="E4p-x1-wv6"/>
+                <constraint firstItem="a86-B6-Xol" firstAttribute="bottom" secondItem="fnl-2z-Ty3" secondAttribute="bottom" id="K98-cL-6N3"/>
+                <constraint firstItem="3yX-T9-cfM" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="V40-G8-zi6"/>
+                <constraint firstItem="kFh-Nj-zWA" firstAttribute="top" secondItem="3yX-T9-cfM" secondAttribute="bottom" id="YxJ-rB-pAu"/>
+                <constraint firstItem="3yX-T9-cfM" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="eIv-BK-qSD"/>
+                <constraint firstItem="3yX-T9-cfM" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="svQ-21-56P"/>
+                <constraint firstItem="kFh-Nj-zWA" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="yRx-Qc-0NB"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="arrowTop.png" width="18" height="30"/>
+    </resources>
+</document>

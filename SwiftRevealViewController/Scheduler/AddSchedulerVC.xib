@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Triomphe-Bold.ttf">
+            <string>Triomphe-Bold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AddSchedulerVC" customModule="SwiftRevealViewController" customModuleProvider="target">
+            <connections>
+                <outlet property="btnDone" destination="ZTT-vi-SIn" id="str-VV-wbI"/>
+                <outlet property="dpComman" destination="hpZ-mm-Ea7" id="GfK-z8-8CD"/>
+                <outlet property="lblSelectedSchduler" destination="yYU-CJ-K9f" id="GhF-vE-TMM"/>
+                <outlet property="pvComman" destination="cNZ-FP-diU" id="s5F-MM-9pd"/>
+                <outlet property="tblMain" destination="aX5-D7-qgR" id="Ahw-SS-GoL"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+                <outlet property="view_Navigation" destination="zge-FT-E9m" id="BK5-OL-zBX"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zge-FT-E9m">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="64"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ADD SCHDULER" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dtc-lh-bIo">
+                            <rect key="frame" x="60" y="24" width="255" height="35"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="35" id="DxT-EU-HHL"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Triomphe-Bold" family="Triomphe" pointSize="20"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="43h-R2-cOU">
+                            <rect key="frame" x="0.0" y="14" width="50" height="50"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="50" id="59o-dy-91p"/>
+                                <constraint firstAttribute="width" constant="50" id="pF0-F4-6Lr"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <state key="normal" image="arrowTop.png"/>
+                            <connections>
+                                <action selector="action_Back:" destination="-1" eventType="touchUpInside" id="RaY-BI-id1"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" red="0.3826444745" green="0.69912677999999995" blue="0.51852017640000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="64" id="DTF-Pr-iN4"/>
+                        <constraint firstItem="dtc-lh-bIo" firstAttribute="leading" secondItem="43h-R2-cOU" secondAttribute="trailing" constant="10" id="Lqi-yB-eLr"/>
+                        <constraint firstAttribute="bottom" secondItem="43h-R2-cOU" secondAttribute="bottom" id="VBe-Uv-KQR"/>
+                        <constraint firstItem="43h-R2-cOU" firstAttribute="leading" secondItem="zge-FT-E9m" secondAttribute="leading" id="qYF-eT-ofk"/>
+                        <constraint firstAttribute="trailing" secondItem="dtc-lh-bIo" secondAttribute="trailing" constant="60" id="sRg-gq-TWr"/>
+                        <constraint firstAttribute="bottom" secondItem="dtc-lh-bIo" secondAttribute="bottom" constant="5" id="vXd-CD-ENz"/>
+                    </constraints>
+                </view>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="aX5-D7-qgR">
+                    <rect key="frame" x="0.0" y="114" width="375" height="483"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="YHM-ut-wgE"/>
+                        <outlet property="delegate" destination="-1" id="hAa-YO-8YV"/>
+                    </connections>
+                </tableView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yYU-CJ-K9f">
+                    <rect key="frame" x="0.0" y="72" width="375" height="34"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="34" id="PDg-hV-rRg"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
+                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZTT-vi-SIn">
+                    <rect key="frame" x="0.0" y="617" width="375" height="50"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="lOY-7D-TGk"/>
+                    </constraints>
+                    <state key="normal" title="DONE">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="action_DoneWithSender:" destination="-1" eventType="touchUpInside" id="6vm-jY-djO"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="ZTT-vi-SIn" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="1Ty-Pq-LbG"/>
+                <constraint firstItem="zge-FT-E9m" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="8JG-JO-gUI"/>
+                <constraint firstItem="ZTT-vi-SIn" firstAttribute="bottom" secondItem="fnl-2z-Ty3" secondAttribute="bottom" id="Dfe-mR-FcG"/>
+                <constraint firstItem="yYU-CJ-K9f" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="Iza-Nh-Rf4"/>
+                <constraint firstItem="aX5-D7-qgR" firstAttribute="bottom" secondItem="fnl-2z-Ty3" secondAttribute="bottom" constant="-70" id="eFr-RU-sTh"/>
+                <constraint firstItem="zge-FT-E9m" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="gRd-SC-lO7"/>
+                <constraint firstItem="aX5-D7-qgR" firstAttribute="top" secondItem="zge-FT-E9m" secondAttribute="bottom" constant="50" id="pab-hw-4Gp"/>
+                <constraint firstItem="ZTT-vi-SIn" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="sEd-Ue-tdy"/>
+                <constraint firstItem="aX5-D7-qgR" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="sZ3-12-zQ1"/>
+                <constraint firstItem="yYU-CJ-K9f" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="tBq-om-FSG"/>
+                <constraint firstItem="yYU-CJ-K9f" firstAttribute="top" secondItem="zge-FT-E9m" secondAttribute="bottom" constant="8" id="tXN-54-wCL"/>
+                <constraint firstItem="zge-FT-E9m" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="upp-R7-9A1"/>
+                <constraint firstItem="aX5-D7-qgR" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="wxo-Kq-xwR"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <point key="canvasLocation" x="8.5" y="-38.5"/>
+        </view>
+        <pickerView contentMode="scaleToFill" id="cNZ-FP-diU">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="216"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+            <connections>
+                <outlet property="dataSource" destination="-1" id="awh-ex-ybS"/>
+                <outlet property="delegate" destination="-1" id="GYB-BC-LPi"/>
+            </connections>
+            <point key="canvasLocation" x="-527" y="-47"/>
+        </pickerView>
+        <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="5" id="hpZ-mm-Ea7">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="216"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+            <date key="date" timeIntervalSinceReferenceDate="537865548.07360995">
+                <!--2018-01-17 07:05:48 +0000-->
+            </date>
+            <connections>
+                <action selector="action_DPValueChangedWithSender:" destination="-1" eventType="valueChanged" id="X69-QP-o47"/>
+            </connections>
+            <point key="canvasLocation" x="-516.5" y="-308"/>
+        </datePicker>
+    </objects>
+    <resources>
+        <image name="arrowTop.png" width="18" height="30"/>
+    </resources>
+</document>
