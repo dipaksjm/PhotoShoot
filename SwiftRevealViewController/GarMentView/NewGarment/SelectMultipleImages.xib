@@ -18,7 +18,7 @@
         </array>
     </customFonts>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="GarmentBasicInfoEdit_Images" customModule="SwiftRevealViewController" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SelectMultipleImages" customModule="SwiftRevealViewController" customModuleProvider="target">
             <connections>
                 <outlet property="btnAddDelete" destination="zVl-M2-d5H" id="3H1-8K-gsD"/>
                 <outlet property="colView" destination="mFI-eu-afI" id="a5d-Sd-QgN"/>
@@ -34,7 +34,7 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HYl-mu-IBG">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="64"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2PU-l6-CW8">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="COLLECTION" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2PU-l6-CW8">
                             <rect key="frame" x="60" y="24" width="255" height="35"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="35" id="iGV-de-870"/>

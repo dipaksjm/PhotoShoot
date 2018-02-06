@@ -11,11 +11,10 @@ import Alamofire
 import SwiftyJSON
 import MBProgressHUD
 
-
 class GarmentBasicInfoEdit: UIViewController ,UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate,UITextViewDelegate{
     
     @IBOutlet weak var tblView : UITableView!
-    var appDelegate =  AppDelegate()
+    var appdel =  AppDelegate()
     var dictGarmentDetailsNew = NSMutableDictionary()
     var arrGarmentImgList = NSMutableArray()
     var strCatalogueId  = String()
@@ -28,17 +27,52 @@ class GarmentBasicInfoEdit: UIViewController ,UITableViewDelegate,UITableViewDat
         super.viewDidLoad()
         print("viewDidLoad...GarmentBasicInfoEdit...")
         
-        appDelegate =  UIApplication.shared.delegate as! AppDelegate
+        appdel =  UIApplication.shared.delegate as! AppDelegate
+        print("dictGarmentDetailsNew:\(dictGarmentDetailsNew)")
+        
+        //self.dictGarmentDetailsNew.removeObject(forKey: "LstGarmentImage")
+        self.dictGarmentDetailsNew.removeObject(forKey: "LstModelImages")
+        self.dictGarmentDetailsNew.removeObject(forKey: "LstAccessories")
+        self.dictGarmentDetailsNew.removeObject(forKey: "LstModelmaster")
         
         print("dictGarmentDetailsNew:\(dictGarmentDetailsNew)")
+        
+        
+        let arrTemp = NSArray()
+        self.dictGarmentDetailsNew.setValue(arrTemp, forKey: "LstDeletedimages")
+        
+        let arrdic  =  NSMutableArray(array: (self.dictGarmentDetailsNew.value(forKey: "LstGarmentImage") as! NSArray))
 
+        for i in 0..<arrdic.count
+        {
+            let dictMain : NSMutableDictionary = [:]
+            let dic  = arrdic.object(at: i ) as! NSDictionary
+            let strMediumImage = dic.value(forKey: "FullImage") as? String
+            dictMain.setValue(strMediumImage, forKey: "FullImage")
+            dictMain.setValue(false, forKey: "isManual")
+            dictMain.setValue(false, forKey: "isSelect")
+            dictMain.setValue(dic.value(forKey: "ImageId") as? String, forKey: "ImageId")
+
+            self.arrGarmentImgList.add(dictMain)
+
+        }
+        print("self.arrGarmentImgList :\(self.arrGarmentImgList)")
+
+        self.dictGarmentDetailsNew.setValue(self.arrGarmentImgList, forKey: "Lstimages")
+        self.dictGarmentDetailsNew.removeObject(forKey: "LstGarmentImage")
+        print("dictGarmentDetailsNew :\(dictGarmentDetailsNew)")
+
+        
         self.setupView()
         
     }
     
     func setupView(){
-        print("setupView...")
-
+        
+        let nib11 = UINib(nibName: "Cell_ModelHeader", bundle: nil)
+        self.tblView.register(nib11, forCellReuseIdentifier: "Cell_ModelHeader")
+        
+        
         let nib = UINib(nibName: "cell_imgCatelog", bundle: nil)
         tblView.register(nib, forCellReuseIdentifier: "id_cell_imgCatelog")
         
@@ -48,25 +82,13 @@ class GarmentBasicInfoEdit: UIViewController ,UITableViewDelegate,UITableViewDat
         let nibCell_AddessModel = UINib(nibName: "Cell_AddessModel", bundle: nil)
         self.tblView.register(nibCell_AddessModel, forCellReuseIdentifier: "Cell_AddessModel")
         
-        self.arrGarmentImgList = NSMutableArray(array: self.dictGarmentDetailsNew.value(forKey: "LstGarmentImage") as! NSArray)
-        
-        self.dictGarmentDetailsNew.setValue(self.dictGarmentDetailsNew.value(forKey: "LstGarmentImage") as! NSArray, forKey: "Lstimages")
-        
-        let arrTemp = NSArray()
-        self.dictGarmentDetailsNew.setValue(arrTemp, forKey: "LstDeletedimages")
-
-        
-        self.dictGarmentDetailsNew.removeObject(forKey: "LstGarmentImage")
-        self.dictGarmentDetailsNew.removeObject(forKey: "LstModelImages")
-        self.dictGarmentDetailsNew.removeObject(forKey: "LstAccessories")
-        self.dictGarmentDetailsNew.removeObject(forKey: "LstModelmaster")
-        
-        
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
         print("dictGarmentDetailsNew:\(dictGarmentDetailsNew)")
-
+        tblView.reloadData()
         
     }
-    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -74,31 +96,37 @@ class GarmentBasicInfoEdit: UIViewController ,UITableViewDelegate,UITableViewDat
     @IBAction func action_Back(_ sender: Any){
         self.navigationController?.popViewController(animated: true)
     }
-    
-    // MARK: -
-
-    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        if (scrollView.isKind(of: UICollectionView.self)) || (scrollView.isKind(of: UITableView.self)){
-            return
-        }
+    func editModelImage(){
+        print("editModelImage...")
         
-        var floatX : CGFloat = 0.0
-        for i in 0..<self.arrGarmentImgList.count{
-            if floatX == scrollView.contentOffset.x{
-                self.intCurrentPage = i
-                let indexPath = NSIndexPath(row: 0, section: 0)
-                self.tblView.reloadRows(at: [indexPath as IndexPath], with: .none)
-                self.perform(#selector(reloadImageView), with: nil, afterDelay: 0.6)
-                break
-            }
-            floatX = floatX + self.tblView.frame.size.width
-        }
+        let objGarmentBasicInfoEdit_Images = GarmentBasicInfoEdit_Images(nibName: "GarmentBasicInfoEdit_Images", bundle: nil)
+        objGarmentBasicInfoEdit_Images.dicModelDetail =  dictGarmentDetailsNew
+        self.navigationController?.pushViewController(objGarmentBasicInfoEdit_Images, animated: true)
+        
+    }
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let viewWidth: CGFloat = scrollView.frame.size.width
+        let pageNumber: Int = Int(floor((scrollView.contentOffset.x - viewWidth / 50) / viewWidth) + 1)
+        
+        let indexPath = NSIndexPath(row: 0, section: 0)
+        print("indexPath:\(indexPath)")
+        let cell = tblView.cellForRow(at: indexPath as IndexPath) as! Cell_ModelHeader
+        cell.pageControl.currentPage = pageNumber
+        
+    }
+    func pageChanged(sender:UIPageControl) {
+        
+        let indexPath = NSIndexPath(row: 0, section: 0)
+        print("indexPath:\(indexPath)")
+        let cell = tblView.cellForRow(at: indexPath as IndexPath) as! Cell_ModelHeader
+        
+        let pageNumber = cell.pageControl.currentPage
+        var frame: CGRect = cell.scroll.frame
+        frame.origin.x = CGFloat(Float(frame.size.width) * Float(pageNumber))
+        frame.origin.y = 0
+        cell.scroll.scrollRectToVisible(frame, animated: true)
     }
     
-    func reloadImageView(){
-        let indexPath = NSIndexPath(row: 0, section: 0)
-        self.tblView.reloadRows(at: [indexPath as IndexPath], with: .none)
-    }
 
     // MARK: -
 
@@ -108,86 +136,147 @@ class GarmentBasicInfoEdit: UIViewController ,UITableViewDelegate,UITableViewDat
         
         if dictGarmentDetailsNew["GarmentName"] as? String == ""
         {
-            self.appDelegate.alertValidation(strMessage: CONSTANT.AlretMessage.Name)
+            self.appdel.alertValidation(strMessage: CONSTANT.AlretMessage.Name)
         }
         else if  dictGarmentDetailsNew["GarmentTitle"] as? String == ""
         {
-            self.appDelegate.alertValidation(strMessage: CONSTANT.AlretMessage.Title)
+            self.appdel.alertValidation(strMessage: CONSTANT.AlretMessage.Title)
         }
         else if  dictGarmentDetailsNew["UniqCode"] as? String == ""
         {
-            self.appDelegate.alertValidation(strMessage: CONSTANT.AlretMessage.Unicode)
+            self.appdel.alertValidation(strMessage: CONSTANT.AlretMessage.Unicode)
         }else
         {
-            print("action_Done:")
-            self.saveGarment()
-        }
-    }
-    
-    
-    func saveGarment(){
-    
-    print("saveGarment...")
-        
-        print("self.dictGarmentDetailsNew :  \(self.dictGarmentDetailsNew)")
-        
-        return
-
-        return
-//    self.appDelegate.showMBProgressHUD()
-        
-    let parameters: [String: Any] = [
-        "GarmentId": "",
-        "GarmentName": "",
-        "GarmentTitle": "",
-        "Description": "",
-        "UniqCode": "",
-        "CoverImage": "",
-        "IsActive": "",
-        "ClientId": "",
-        "CreatedBy": "",
-        "Isdeleted": "false",
-        ]
-//        Lstimages
-//        LstDeletedimages
-    print("parameters ==> \(parameters)")
-    
-    let parametersNew : [String:Any] = ["obj":parameters]
-    
-    Alamofire.request(CONSTANT.service_URL.AddEditScheduler, method: .post, parameters: parametersNew , encoding: JSONEncoding.default, headers: nil).responseJSON { (response:DataResponse<Any>) in
-    
-        self.appDelegate.hideMBProgressHUD()
-        switch(response.result){
-        case .success(_):
-            if response.result.value != nil{
-                
-                let dictRes = response.result.value as! NSDictionary
-                print("dictRes:\(dictRes)")
-                
-                if dictRes["Success"] as! Bool == true {
-                }else{
-                }
+            
+            let dictMain : NSMutableDictionary = [:]
+            dictMain.setValue(self.setGarmentDetails(), forKey: "obj")
+            print("dictMain:\(dictMain)")
+            
+            
+            if let data = try? JSONSerialization.data(withJSONObject: dictMain, options: .prettyPrinted),
+                let str = String(data: data, encoding: .utf8) {
+                print(str)
             }
-            break
+            appdel.showMBProgressHUD()
             
-        case .failure(_):
-            print(response.result.error!)
-            self.appDelegate.alertValidation(strMessage: response.result.error!.localizedDescription)
-            
-            break
+            let manager = AFHTTPSessionManager()
+            manager.requestSerializer = AFJSONRequestSerializer()
+            manager.responseSerializer = AFHTTPResponseSerializer()
+            manager.requestSerializer.timeoutInterval = 60
+            manager.post(CONSTANT.service_URL.SaveGarmentBasicInfo, parameters: dictMain, success: {
+                requestOperation, response in
+                do {
+                    let dictResult =  try JSONSerialization.jsonObject(with: (response as! NSData) as Data, options: []) as! NSDictionary
+                    
+                    print(dictResult)
+                    self.appdel.hideMBProgressHUD()
+                    self.appdel.alertValidation(strMessage: dictResult.value(forKey: "Message") as! String)
+                    
+                } catch let error as NSError {
+                    print(error)
+                    self.appdel.alertValidation(strMessage: CONSTANT.AlretMessage.Tryagain)
+                }
+                
+            },failure:{
+                requestOperation, error in
+                print("error is : \(error)")
+                self.appdel.hideMBProgressHUD()
+            })
         }
-    
     }
     
-    
+    func setGarmentDetails()->NSMutableDictionary{
+        
+        print("dictGarmentDetailsNew is : \(dictGarmentDetailsNew)")
+
+        let dic  = dictGarmentDetailsNew
+        let arrdic  = dic.value(forKey: "Lstimages") as! NSArray
+        if arrdic.count > 0
+        {
+            let dic1  = arrdic.object(at: 0) as! NSDictionary
+            if dic1.value(forKey: "isManual") as? Bool ==  true{
+                let strcoverImage = dic1.value(forKey: "FullImage") as? String
+                let theFileName = (strcoverImage! as NSString).lastPathComponent
+                let newcoverImage = "/UploadedImage/Garment/\(theFileName)"
+                dic.setValue(newcoverImage, forKey: "CoverImage")
+            }
+            else{
+                let strcoverImage = dic1.value(forKey: "FullImage") as? String
+                let newcoverImage = strcoverImage?.replacingOccurrences(of: "http://162.241.243.214:421/", with: "", options: .literal, range: nil)
+                print("newcoverImage :\(String(describing: newcoverImage))")
+                dic.setValue(newcoverImage, forKey: "CoverImage")
+
+            }
+        }
+        dic.setValue(false, forKey: "IsDeleted")
+        dic.setValue(self.setGarmentImagesDetails(), forKey: "Lstimages")
+        dic.setValue(self.setGarmentLstDeletedimagesDetails(), forKey: "LstDeletedimages")
+
+        print("dic :\(dic)")
+
+        return dic
+        
     }
+    func setGarmentLstDeletedimagesDetails()->NSMutableArray{
+        let arrDetails = NSMutableArray()
+        let arrdic  = dictGarmentDetailsNew.value(forKey: "LstDeletedimages") as! NSArray
+        for i in 0..<arrdic.count
+        {
+             let dic  = arrdic.object(at: i ) as! NSDictionary
+             let strImageDel = dic.value(forKey: "ImageId") as! String
+              arrDetails.add(strImageDel)
+        }
+        
+        return arrDetails
+    }
+    func setGarmentImagesDetails()->NSMutableArray{
+        
+        let arrDetails = NSMutableArray()
+        
+        let arrdic  = dictGarmentDetailsNew.value(forKey: "Lstimages") as! NSArray
+
+        for i in 0..<arrdic.count
+        {
+            let dictMain : NSMutableDictionary = [:]
+            let dic  = arrdic.object(at: i ) as! NSDictionary
+            if dic.value(forKey: "isManual") as? Bool ==  true
+            {
+                let strcoverImage = dic.value(forKey: "FullImage") as? String
+                let theFileName = (strcoverImage! as NSString).lastPathComponent
+                let newcoverImage = "/UploadedImage/Garment/\(theFileName)"
+                dictMain.setValue(newcoverImage, forKey: "FullImage")
+                dictMain.setValue(true, forKey: "IsEditModelImage")
+                dictMain.setValue("", forKey: "OldImage")
+
+            }
+            else{
+                let strFullImage = dic.value(forKey: "FullImage") as? String
+                let newFullImage = strFullImage?.replacingOccurrences(of: "http://162.241.243.214:421/", with: "", options: .literal, range: nil)
+                print("newFullImage :\(String(describing: newFullImage))")
+                dictMain.setValue(newFullImage, forKey: "FullImage")
+                dictMain.setValue(false, forKey: "IsEditModelImage")
+
+//                let strOldImage = dic.value(forKey: "OldImage") as? String
+//                let theFileNameold = (strOldImage! as NSString).lastPathComponent
+//                let newOldImage = "/UploadedImage/GarmentModel/\(theFileNameold)"
+                dictMain.setValue("", forKey: "OldImage")
+
+            }
+            arrDetails.add(dictMain)
+        }
+        print("arrDetails :\(arrDetails)")
+        
+        return arrDetails
+        
+    }
+    
     // MARK: -
     // MARK: UITableView Method
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat{
         print("heightForRowAt...")
         if indexPath.row == 0
         {
-            return 251.0
+            return 317
         }
         else if indexPath.row == 1 || indexPath.row == 2 || indexPath.row == 3
         {
@@ -201,55 +290,44 @@ class GarmentBasicInfoEdit: UIViewController ,UITableViewDelegate,UITableViewDat
         return 5
     }
     
-    
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell{
         
         if indexPath.row == 0{
-            let cell : cell_imgCatelog = tableView.dequeueReusableCell(withIdentifier: "id_cell_imgCatelog") as! cell_imgCatelog
-            cell.svMain.delegate = self
-            cell.svMain.backgroundColor = UIColor.white
+            let cell : Cell_ModelHeader = tableView.dequeueReusableCell(withIdentifier: "Cell_ModelHeader") as! Cell_ModelHeader
             
+            cell.btnHeaderEdit.addTarget(self, action: #selector(self.editModelImage), for: UIControlEvents.touchUpInside)
             
-            for i in 0..<self.arrGarmentImgList.count{
-                if let isImgView = cell.svMain.viewWithTag(100+i){
-                    if isImgView.isKind(of: UIImageView.self){
-                        isImgView.removeFromSuperview()
-                    }
+            let arrdic  = dictGarmentDetailsNew.value(forKey: "Lstimages") as? NSArray
+            
+            let total = Float((arrdic?.count)!)
+
+            cell.scroll.contentSize = CGSize(width: CGFloat(Float(tableView.frame.size.width) * total), height: cell.scroll.frame.size.height)
+            // page control
+            cell.scroll.delegate = self
+            cell.pageControl.numberOfPages = Int(total)
+            cell.pageControl.addTarget(self, action: #selector(pageChanged(sender:)), for: .valueChanged)
+            
+            var x: CGFloat = 0
+            for i in 0..<Int(total)  {
+                let image = UIImageView(frame: CGRect(x: x + 0, y: 0, width: tableView.frame.size.width, height: cell.scroll.frame.size.height))
+                // image.image = UIImage(named: "\(i).jpg")
+                let dic  = arrdic?.object(at: i ) as! NSDictionary
+                if dic.value(forKey: "isManual") as? Bool ==  true{
+                    image.image = UIImage(contentsOfFile: (dic.value(forKey: "FullImage") as? String)!)
                 }
+                else{
+                    let strImgPath = dic.value(forKey: "FullImage") as? String
+                    image.setImageWith(NSURL(string: strImgPath!)! as URL, placeholderImage: UIImage(named: "placeholder.png"))
+                }
+                
+                image.contentMode = .scaleAspectFit // ALTERNATIVE:  .ScaleAspectFit
+                cell.scroll.addSubview(image)
+                x += tableView.frame.size.width
             }
-            
-            cell.btnEditPhoto.addTarget(self, action: #selector(self.editGarmentPhoto), for: UIControlEvents.touchUpInside)
-            
-            
-            cell.svMain.contentSize.width = CGFloat(Float(self.tblView.frame.size.width) * Float(self.arrGarmentImgList.count))
-            cell.pcImage.numberOfPages = self.arrGarmentImgList.count
-            cell.pcImage.currentPage = intCurrentPage
-            
-            var floatX : CGFloat = 0.0
-            for i in 0..<self.arrGarmentImgList.count{
-                let imgCatelogue = UIImageView()
-                imgCatelogue.frame = CGRect(x: floatX, y: 0, width: self.tblView.frame.size.width, height: 251)
-                //                imgCatelogue.image = UIImage(named: "\(i+1).jpg")
-                let dictGDetails = self.arrGarmentImgList.object(at: i) as! NSDictionary
-                imgCatelogue.setImageWith(NSURL(string: dictGDetails.value(forKey: "MediumImage") as! String)! as URL, placeholderImage: UIImage(named: "placeholder.png"))
-                imgCatelogue.tag = 100 + i
-                imgCatelogue.contentMode = UIViewContentMode.scaleAspectFit
-                cell.svMain.addSubview(imgCatelogue)
-                floatX = floatX + self.tblView.frame.size.width
-            }
-            
-            cell.pcImage.backgroundColor = UIColor.clear
-            cell.pcImage.transform = CGAffineTransform(scaleX: 2, y: 2)
-            cell.pcImage.tintColor = UIColor.lightGray
-            cell.pcImage.pageIndicatorTintColor = UIColor.gray
-            cell.pcImage.currentPageIndicatorTintColor = CONSTANT.color_App.color_CM
-            cell.pcImage.setNeedsDisplay()
-            cell.pcImage.tag = 3343
-            
-            let X : CGFloat = CGFloat(cell.pcImage.currentPage) * self.tblView.frame.size.width
-            cell.svMain.setContentOffset(CGPoint(x:X, y:0), animated: false)
             return cell
-        }else if indexPath.row == 1 || indexPath.row == 2 || indexPath.row == 3{
+        }
+        
+        else if indexPath.row == 1 || indexPath.row == 2 || indexPath.row == 3{
             let rowint = indexPath.row - 1
             
             let cell : Cell_ModelME = tableView.dequeueReusableCell(withIdentifier: "Cell_ModelME") as! Cell_ModelME
@@ -274,7 +352,10 @@ class GarmentBasicInfoEdit: UIViewController ,UITableViewDelegate,UITableViewDat
             cell.txtField.tag =  rowint
             cell.txtField.delegate = self
             return cell
-        }else{
+            
+        }
+        else
+        {
             let cell : Cell_AddessModel = tableView.dequeueReusableCell(withIdentifier: "Cell_AddessModel") as! Cell_AddessModel
             cell.lblTitle.text = "DESCRIPTION"
             cell.txtaddress.text = self.dictGarmentDetailsNew.value(forKey: "Description") as? String
@@ -292,9 +373,9 @@ class GarmentBasicInfoEdit: UIViewController ,UITableViewDelegate,UITableViewDat
 
     func editGarmentPhoto(){
         print("editGarmentPhoto...")
-        let objGarmentBasicInfoEdit_Images = GarmentBasicInfoEdit_Images(nibName: "GarmentBasicInfoEdit_Images", bundle: nil)
-        objGarmentBasicInfoEdit_Images.dictGarmentInfo = NSMutableDictionary(dictionary: self.dictGarmentDetailsNew)
-        self.navigationController?.pushViewController(objGarmentBasicInfoEdit_Images, animated: true)
+//        let objGarmentBasicInfoEdit_Images = GarmentBasicInfoEdit_Images(nibName: "GarmentBasicInfoEdit_Images", bundle: nil)
+//        objGarmentBasicInfoEdit_Images.dictGarmentInfo = NSMutableDictionary(dictionary: self.dictGarmentDetailsNew)
+//        self.navigationController?.pushViewController(objGarmentBasicInfoEdit_Images, animated: true)
 
     }
     // MARK: -
@@ -311,7 +392,6 @@ class GarmentBasicInfoEdit: UIViewController ,UITableViewDelegate,UITableViewDat
     func textFieldDidEndEditing(_ textField: UITextField)
     {
         if textField.tag == 0 {
-//            dictGarmentDetailsNew["GarmentName"] = textField.text
             self.dictGarmentDetailsNew.setValue(textField.text, forKey: "GarmentName")
         }
         if textField.tag == 1 {
@@ -322,6 +402,8 @@ class GarmentBasicInfoEdit: UIViewController ,UITableViewDelegate,UITableViewDat
             dictGarmentDetailsNew["UniqCode"] = textField.text
             self.dictGarmentDetailsNew.setValue(textField.text, forKey: "UniqCode")
         }
+        print("dictGarmentDetailsNew:\(dictGarmentDetailsNew)")
+        
     }
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         // return NO to not change text

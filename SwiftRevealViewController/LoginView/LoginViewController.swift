@@ -174,19 +174,15 @@ class LoginViewController: UIViewController,UITableViewDataSource,UITableViewDel
                 {
                     
                     let jsonObject = response.result.value as! NSDictionary
-                    print(jsonObject)
                     
                     if jsonObject["IsAuthenticate"] as! Bool == true {
                         
                         let jsonArrLstLoginDetail = jsonObject.object(forKey: "LstLoginDetail") as! NSArray
-                        print(jsonArrLstLoginDetail)
                         
                         self.appdel.userDataDic = jsonArrLstLoginDetail[0] as! NSDictionary
                         self.appdel.strClientAdminId  = self.appdel.userDataDic["ClientAdminId"] as! String
                         self.appdel.strClientId  = self.appdel.userDataDic["ClientId"] as! String
-                        
-
-
+                        self.appdel.strRollID  = "\(self.appdel.userDataDic["RoleId"] as! NSNumber)"
 
                         let defaults = UserDefaults.standard
                         defaults.set(jsonArrLstLoginDetail[0] as! NSDictionary, forKey: "ProfileData")

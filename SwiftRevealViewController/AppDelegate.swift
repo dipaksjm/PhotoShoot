@@ -14,6 +14,11 @@ import Alamofire
 import SwiftyJSON
 import SystemConfiguration
 
+extension Date {
+    func toTimeStamp() -> Int64! {
+        return Int64(self.timeIntervalSince1970 * 1000)
+    }
+}
 
 // /*
 struct CONSTANT {
@@ -28,6 +33,7 @@ struct CONSTANT {
 
         static let GetStatusList = "\(CommanURL)GetStatusList"
         static let GetModelList = "\(CommanURL)GetModelList"
+        static let CheckUnicode = "\(CommanURL)CheckUniqueCode"
 
         // Catalogue
         static let GetCatalogueList = "\(CommanURL)GetCatalogueList"
@@ -40,6 +46,8 @@ struct CONSTANT {
         static let SaveGarmentBasicInfo = "\(CommanURL)GarmentEdit"
         static let AddModel = "\(CommanURL)AddModel"
         static let ModelMapping = "\(CommanURL)Garment_ModelMappingAddEdit"
+        static let GetClientList = "\(CommanURL)GetClientListByclientAdminId"
+
         
 
         
@@ -54,7 +62,6 @@ struct CONSTANT {
 
     }
     
-    
     struct color_App {
         static let color_CM = UIColor(red: 112.0/255.0, green: 217.0/255.0, blue: 155.0/255.0, alpha: 1.0)
         static let color_SCH = UIColor(red: 180.0/255.0, green: 121.0/255.0, blue: 208.0/255.0, alpha: 1.0)
@@ -67,6 +74,11 @@ struct CONSTANT {
         static let color_default_darkGray = UIColor.darkGray
         static let color_TittleDefault_Black = UIColor.black
     }
+    
+    struct className{
+        static let AddNewGarment = "addnewgarment"
+    }
+
     
 //    struct Font {
 //        static let roboto_Bold_20 = UIFont(name: "Triomphe-Bold", size: 20)
@@ -146,6 +158,9 @@ struct CONSTANT {
         static let PleaseSelectModel   =  "Please select any model."
         static let ModelMapSuccess   =  "Model mapped successfully."
         static let ModelMapFail   =  "Model mapping failed, \(Tryagain)."
+        static let PleaseSelectClient   =  "Please select client."
+        static let UnicodeShouldBeUnique   =  "Garment Unicode must be unique."
+
         
 
         
@@ -157,9 +172,14 @@ struct CONSTANT {
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    var userDataDic  =  NSDictionary()
-    var strClientAdminId       = String()
-    var strClientId       = String()
+    var userDataDic         = NSDictionary()
+    var strClientAdminId    = String()
+    var strClientId         = String()
+    var strRollID           = String()
+    
+    var dictAddNewGarment   = NSMutableDictionary()
+    
+    var strCurrentClass     = String()
     
     
 // MARK: -
@@ -213,9 +233,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
       //  self.createMenuView()
         
-        self.addIQKeyBoardManager()
+        self.addIQKeyBoardManager()        
 
-        
         return true
     }
 
@@ -299,6 +318,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             blue: CGFloat(rgbValue & 0x0000FF) / 255.0,
             alpha: CGFloat(1.0)
         )
+    }
+    func generateTimeStamp()->String{
+        return("\(Date().toTimeStamp()!)")
     }
 
 }

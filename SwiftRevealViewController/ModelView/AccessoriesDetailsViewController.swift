@@ -21,7 +21,7 @@ class AccessoriesDetailsViewController: UIViewController,UIScrollViewDelegate,UI
     var isEditable = Bool()
     var isNew = String()
     var imagePicker = UIImagePickerController()
-
+    var intIndex = Int()
     
     
     // MARK: -
@@ -69,8 +69,10 @@ class AccessoriesDetailsViewController: UIViewController,UIScrollViewDelegate,UI
         self.navigationController?.popViewController(animated: true)
     }
     
-    @IBAction func action_Done(_ sender: Any)
-    {
+    @IBAction func action_Done(_ sender: Any){
+        print("action_Done...\(self.dictAccessDetails)")
+        
+
     }
 
     // MARK: -
@@ -136,6 +138,7 @@ class AccessoriesDetailsViewController: UIViewController,UIScrollViewDelegate,UI
         alert.addAction(UIAlertAction(title: "Gallery", style: .default, handler: { _ in
             self.imagePicker.sourceType = UIImagePickerControllerSourceType.photoLibrary
             self.imagePicker.allowsEditing = true
+            self.imagePicker.delegate = self
             self.present(self.imagePicker, animated: true, completion: nil)
         }))
         
@@ -144,7 +147,29 @@ class AccessoriesDetailsViewController: UIViewController,UIScrollViewDelegate,UI
 
     }
 
-  
+    public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]){
+        
+        let image = info[UIImagePickerControllerOriginalImage] as! UIImage
+        let fileManager = FileManager.default
+        
+        let imgName = "\(self.appDelegate.generateTimeStamp()).jpg"
+        let paths = (NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as NSString).appendingPathComponent(imgName)
+        print("local paths : \(paths)")
+        let imageData = UIImageJPEGRepresentation(image, 0.5)
+        fileManager.createFile(atPath: paths as String, contents: imageData, attributes: nil)
+        
+        self.dictAccessDetails.setValue(paths, forKey: "FullImage")
+        self.dictAccessDetails.setValue(paths, forKey: "SmallImage")
+        self.dictAccessDetails.setValue(paths, forKey: "MediumImage")
+
+
+        dismiss(animated: true, completion: nil)
+        
+        let indexPath = NSIndexPath(row: 0, section: 0)
+        print("indexPath:\(indexPath)")
+        self.tblView.reloadRows(at: [indexPath as IndexPath], with: .none)
+    }
+
     
     
     // MARK: -
@@ -153,54 +178,71 @@ class AccessoriesDetailsViewController: UIViewController,UIScrollViewDelegate,UI
         
         self.view.endEditing(true)
         
-        print("addEditAccessories...\(self.dictAccessDetails.value(forKey: "Description") as! String)")
         
-        
-        self.appDelegate.showMBProgressHUD()
-        
-        let parameters: [String: Any] = [
-            "GarmentId": self.dictAccessDetails.value(forKey: "GarmentId") as! String,
-            "AccessoriesId": self.dictAccessDetails.value(forKey: "AccessoriesId") as! String,
-            "ClientId": self.dictAccessDetails.value(forKey: "ClientId") as! String,
-            "CategoryId": "\(self.dictAccessDetails.value(forKey: "CategoryId") as! NSNumber)",
-            "CreatedBy": self.dictAccessDetails.value(forKey: "CreatedBy") as! String,
-            "ClientAdminId": self.dictAccessDetails.value(forKey: "ClientAdminId") as! String,
-            "AccessoriesName": self.dictAccessDetails.value(forKey: "AccessoriesName") as! String,
-            "Description": self.dictAccessDetails.value(forKey: "Description") as! String,
-            "FullImage": "/UploadedImage/Accessories/F_636512245326575285.jpg",//(self.dictAccessDetails.value(forKey: "FullImage") as! String).replacingOccurrences(of:CONSTANT.service_URL.pathImgRemove, with: ""),
-            "Isdeleted": "false"
-        ]
-        
-        print("parameters ==> \(parameters)")
-        
-        let parametersNew : [String:Any] = ["obj":parameters]
-        
-        Alamofire.request(CONSTANT.service_URL.AccessoriesAddEdit, method: .post, parameters: parametersNew , encoding: JSONEncoding.default, headers: nil).responseJSON { (response:DataResponse<Any>) in
+        if self.appDelegate.strCurrentClass == CONSTANT.className.AddNewGarment{
+            print("yes...")
+            print("self.dictAccessDetails : \(self.dictAccessDetails)")
             
-            self.appDelegate.hideMBProgressHUD()
+            if self.isNew == "yes"{
+                let arrTemp = NSMutableArray(array: self.appDelegate.dictAddNewGarment.value(forKey: "LstAccessories") as! NSArray)
+                arrTemp.add(self.dictAccessDetails)
+                self.appDelegate.dictAddNewGarment.setValue(arrTemp, forKey: "LstAccessories")
+                self.navigationController?.popViewController(animated: true)
+            }else{
+                let arrTemp = NSMutableArray(array: self.appDelegate.dictAddNewGarment.value(forKey: "LstAccessories") as! NSArray)
+                arrTemp.replaceObject(at: self.intIndex, with: self.dictAccessDetails)
+                self.appDelegate.dictAddNewGarment.setValue(arrTemp, forKey: "LstAccessories")
+                self.navigationController?.popViewController(animated: true)
+            }
             
-            switch(response.result){
-            case .success(_):
-                if response.result.value != nil{
-                    
-                    let jsonObject = response.result.value as! NSDictionary
-                    print("jsonObject:\(jsonObject)")
-                    
-                    if jsonObject["IsError"] as! Bool == false {
-                        if self.isNew == "yes"{
-                            self.appDelegate.showMBProgressHUD_short(strMsg: CONSTANT.AlretMessage.Accessory_added)
-                        }else{
-                            self.appDelegate.showMBProgressHUD_short(strMsg: CONSTANT.AlretMessage.Accessory_edited)
-                        }
-                        self.perform(#selector(self.action_Back(_:)), with: nil, afterDelay: 3)
-                    }
-                }
-                break
+            
+        }else{
+            self.appDelegate.showMBProgressHUD()
+            
+            let parameters: [String: Any] = [
+                "GarmentId": self.dictAccessDetails.value(forKey: "GarmentId") as! String,
+                "AccessoriesId": self.dictAccessDetails.value(forKey: "AccessoriesId") as! String,
+                "ClientId": self.dictAccessDetails.value(forKey: "ClientId") as! String,
+                "CategoryId": "\(self.dictAccessDetails.value(forKey: "CategoryId") as! NSNumber)",
+                "CreatedBy": self.dictAccessDetails.value(forKey: "CreatedBy") as! String,
+                "ClientAdminId": self.dictAccessDetails.value(forKey: "ClientAdminId") as! String,
+                "AccessoriesName": self.dictAccessDetails.value(forKey: "AccessoriesName") as! String,
+                "Description": self.dictAccessDetails.value(forKey: "Description") as! String,
+                "FullImage": "/UploadedImage/Accessories/F_636512245326575285.jpg",//(self.dictAccessDetails.value(forKey: "FullImage") as! String).replacingOccurrences(of:CONSTANT.service_URL.pathImgRemove, with: ""),
+                "Isdeleted": "false"
+            ]
+            
+            print("parameters ==> \(parameters)")
+            
+            let parametersNew : [String:Any] = ["obj":parameters]
+            
+            Alamofire.request(CONSTANT.service_URL.AccessoriesAddEdit, method: .post, parameters: parametersNew , encoding: JSONEncoding.default, headers: nil).responseJSON { (response:DataResponse<Any>) in
                 
-            case .failure(_):
-                print(response.result.error!)
-                self.appDelegate.alertValidation(strMessage: response.result.error!.localizedDescription)
-                break
+                self.appDelegate.hideMBProgressHUD()
+                
+                switch(response.result){
+                case .success(_):
+                    if response.result.value != nil{
+                        
+                        let jsonObject = response.result.value as! NSDictionary
+                        print("jsonObject:\(jsonObject)")
+                        
+                        if jsonObject["IsError"] as! Bool == false {
+                            if self.isNew == "yes"{
+                                self.appDelegate.showMBProgressHUD_short(strMsg: CONSTANT.AlretMessage.Accessory_added)
+                            }else{
+                                self.appDelegate.showMBProgressHUD_short(strMsg: CONSTANT.AlretMessage.Accessory_edited)
+                            }
+                            self.perform(#selector(self.action_Back(_:)), with: nil, afterDelay: 3)
+                        }
+                    }
+                    break
+                    
+                case .failure(_):
+                    print(response.result.error!)
+                    self.appDelegate.alertValidation(strMessage: response.result.error!.localizedDescription)
+                    break
+                }
             }
         }
     }
@@ -240,12 +282,23 @@ class AccessoriesDetailsViewController: UIViewController,UIScrollViewDelegate,UI
             
             let x: CGFloat = 0
             let imgAccessory = UIImageView(frame: CGRect(x: x + 0, y: 0, width: tableView.frame.size.width, height: cell.scroll.frame.size.height))
-            imgAccessory.image = UIImage(named: "4.jpg")
+            
+            if self.appDelegate.strCurrentClass == CONSTANT.className.AddNewGarment{
+                if (self.dictAccessDetails.value(forKey: "FullImage") as! String).count > 0{
+                    imgAccessory.image = UIImage(contentsOfFile: self.dictAccessDetails.value(forKey: "FullImage") as! String)
+                }else{
+                    imgAccessory.image = UIImage(named: "placeholder.png")
+                }
+            }else{
+                imgAccessory.image = UIImage(named: "placeholder.png")
+            }
+//
+            
+            
 //            let strImgPath = dictAccessDetails.object(forKey: "MediumImage") as! String
 //            imgAccessory.setImageWith(NSURL(string: strImgPath)! as URL, placeholderImage: UIImage(named: "placeholder.png"))
             imgAccessory.contentMode = .scaleAspectFit // ALTERNATIVE:  .ScaleAspectFit
             cell.scroll.addSubview(imgAccessory)
-            
             cell.btnHeaderEdit.addTarget(self, action: #selector(action_CamaraOption(_:)), for: .touchUpInside)
 
             return cell

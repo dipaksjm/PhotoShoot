@@ -12,15 +12,11 @@ import SwiftyJSON
 import MBProgressHUD
 
 
-class ProductDetailsVC: UIViewController,UIScrollViewDelegate,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UITableViewDelegate,UITableViewDataSource,UIPageViewControllerDelegate {
+class GarAddViewController2: UIViewController,UIScrollViewDelegate,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UITableViewDelegate,UITableViewDataSource,UIPageViewControllerDelegate {
     
     var appDelegate =  AppDelegate()
     
-    var strIsNeedReload = ""
-    
-    var dictGarmentDetails = NSMutableDictionary()
     var arrImgGarment = NSMutableArray()
-
     var arrAccessory = NSMutableArray()
     var arrModel = NSMutableArray()
     var arrEnvironment = NSMutableArray()
@@ -28,7 +24,6 @@ class ProductDetailsVC: UIViewController,UIScrollViewDelegate,UICollectionViewDe
     @IBOutlet var tblMain : UITableView!
     var intCurrentPage  = 0
     
-    var refreshControl: UIRefreshControl!
 
     
     // MARK: -
@@ -36,22 +31,16 @@ class ProductDetailsVC: UIViewController,UIScrollViewDelegate,UICollectionViewDe
         super.viewDidLoad()
         appDelegate =  UIApplication.shared.delegate as! AppDelegate
         
-        self.strIsNeedReload = "no"
-        self.getGarmentDetails()
         self.setupView()
-        self.setupRefreshControl()
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        print("viewWillAppear...\(self.strIsNeedReload)")
-        if self.strIsNeedReload == "yes"{
-            self.getGarmentDetails()
-            self.strIsNeedReload = "no"
-        }else{
-            self.tblMain.reloadData()
-        }
+        print("viewWillAppear...\(self.appDelegate.dictAddNewGarment)")
         
+        self.setupView()
+
         
+        self.tblMain.reloadData()
     }
 
     override func didReceiveMemoryWarning() { super.didReceiveMemoryWarning()   }
@@ -62,25 +51,34 @@ class ProductDetailsVC: UIViewController,UIScrollViewDelegate,UICollectionViewDe
 
     func setupView(){
         
-        if let isGarmentAvailable = dictGarmentDetails.value(forKey: "LstGarmentImage") as? NSArray{
+        if let isGarmentAvailable = self.appDelegate.dictAddNewGarment.value(forKey: "LstGarmentImage") as? NSArray{
             if isGarmentAvailable.isKind(of: NSArray.self){
                 self.arrImgGarment = NSMutableArray(array: isGarmentAvailable)
             }
+        }else{
+            let arrTemp = NSMutableArray()
+            self.appDelegate.dictAddNewGarment.setValue(arrTemp, forKey: "LstGarmentImage")
         }
         
-        if let isAcceAvailable = dictGarmentDetails.value(forKey: "LstAccessories") as? NSArray{
+        if let isAcceAvailable = self.appDelegate.dictAddNewGarment.value(forKey: "LstAccessories") as? NSArray{
             if isAcceAvailable.isKind(of: NSArray.self){
                 self.arrAccessory = NSMutableArray(array: isAcceAvailable)
             }
+        }else{
+            let arrTemp = NSMutableArray()
+            self.appDelegate.dictAddNewGarment.setValue(arrTemp, forKey: "LstAccessories")
         }
         
-        if let isModelAvailable = dictGarmentDetails.value(forKey: "LstModelmaster") as? NSArray{
+        if let isModelAvailable = self.appDelegate.dictAddNewGarment.value(forKey: "LstModelmaster") as? NSArray{
             if isModelAvailable.isKind(of: NSArray.self){
                 self.arrModel = NSMutableArray(array: isModelAvailable)
             }
+        }else{
+            let arrTemp = NSMutableArray()
+            self.appDelegate.dictAddNewGarment.setValue(arrTemp, forKey: "LstModelmaster")
         }
         
-//        if let isEnvironmentAvailable = dictGarmentDetails.value(forKey: "???") as? NSArray{
+//        if let isEnvironmentAvailable = self.appDelegate.dictAddNewGarment.value(forKey: "???") as? NSArray{
 //            if isEnvironmentAvailable.isKind(of: NSArray.self){
 //                self.arrImgGarment = NSMutableArray(array: isGarmentAvailable)
 //            }
@@ -96,19 +94,13 @@ class ProductDetailsVC: UIViewController,UIScrollViewDelegate,UICollectionViewDe
         let nibCatelogueName = UINib(nibName: "cell_CatelogueName", bundle: nil)
         self.tblMain.register(nibCatelogueName, forCellReuseIdentifier: "id_cell_CatelogueName")
         
-        
+        print(" self.appDelegate.dictAddNewGarment : \(self.appDelegate.dictAddNewGarment)")
+
         print("\(self.arrAccessory.count)")
         print("\(self.arrModel.count)")
         print("\(self.arrImgGarment.count)")
     }
     
-    func setupRefreshControl(){
-        self.refreshControl = UIRefreshControl()
-        self.refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
-        self.refreshControl.addTarget(self, action: #selector(ProductDetailsVC.getGarmentDetails), for: UIControlEvents.valueChanged)
-        self.tblMain.addSubview(self.refreshControl)
-
-    }
     // MARK: -
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         
@@ -200,7 +192,7 @@ class ProductDetailsVC: UIViewController,UIScrollViewDelegate,UICollectionViewDe
                 let cell:Cell_cv_GarmentAcc = collectionView.dequeueReusableCell(withReuseIdentifier: "id_Cell_cv_GarmentAcc", for: indexPath as IndexPath) as! Cell_cv_GarmentAcc
                 let strImgPath = (self.arrAccessory.object(at: indexPath.row-1) as! NSDictionary).value(forKey: "SmallImage") as! String
                 if strImgPath.count > 0{
-                    cell.imgType.setImageWith(NSURL(string: strImgPath)! as URL, placeholderImage: UIImage(named: "placeholder.png"))
+                    cell.imgType.image = UIImage(contentsOfFile:strImgPath)
                 }else{
                     cell.imgType.image = UIImage(named:"placeholder.png")
                 }
@@ -290,18 +282,15 @@ class ProductDetailsVC: UIViewController,UIScrollViewDelegate,UICollectionViewDe
                 let objAccessorieListVC = AccessorieListVC(nibName: "AccessorieListVC", bundle: nil)
              
                 objAccessorieListVC.arrList = self.arrAccessory
-                
-                objAccessorieListVC.dictGarmentDetails.setValue(self.dictGarmentDetails.value(forKey: "ClientId") as! String, forKey: "ClientId")
-                objAccessorieListVC.dictGarmentDetails.setValue(self.dictGarmentDetails.value(forKey: "GarmentId") as! String, forKey: "GarmentId")
-                objAccessorieListVC.dictGarmentDetails.setValue(self.dictGarmentDetails.value(forKey: "CreatedBy") as! String, forKey: "CreatedBy")
-                objAccessorieListVC.dictGarmentDetails.setValue(self.dictGarmentDetails.value(forKey: "GarmentTitle") as! String, forKey: "GarmentTitle")
-//                objAccessorieListVC.dictGarmentDetails.setValue(self.dictGarmentDetails.value(forKey: "Description") as! String, forKey: "Description")
-                objAccessorieListVC.dictGarmentDetails.setValue(self.dictGarmentDetails.value(forKey: "UniqCode") as! String, forKey: "UniqCode")
-                objAccessorieListVC.dictGarmentDetails.setValue(self.dictGarmentDetails.value(forKey: "ClientAdminId") as! String, forKey: "ClientAdminId")
-                objAccessorieListVC.dictGarmentDetails.setValue(self.dictGarmentDetails.value(forKey: "CatalogueId") as! String, forKey: "CatalogueId")
-                objAccessorieListVC.dictGarmentDetails.setValue(self.dictGarmentDetails.value(forKey: "CoverImage") as! String, forKey: "CoverImage")
-
-                
+                objAccessorieListVC.dictGarmentDetails.setValue(self.appDelegate.dictAddNewGarment.value(forKey: "ClientId") as! String, forKey: "ClientId")
+//                objAccessorieListVC.dictGarmentDetails.setValue(self.appDelegate.dictAddNewGarment.value(forKey: "GarmentId") as! String, forKey: "GarmentId")
+                objAccessorieListVC.dictGarmentDetails.setValue(self.appDelegate.dictAddNewGarment.value(forKey: "CreatedBy") as! String, forKey: "CreatedBy")
+                objAccessorieListVC.dictGarmentDetails.setValue(self.appDelegate.dictAddNewGarment.value(forKey: "GarmentTitle") as! String, forKey: "GarmentTitle")
+//                objAccessorieListVC.self.appDelegate.dictAddNewGarment.setValue(self.self.appDelegate.dictAddNewGarment.value(forKey: "Description") as! String, forKey: "Description")
+                objAccessorieListVC.dictGarmentDetails.setValue(self.appDelegate.dictAddNewGarment.value(forKey: "UniqCode") as! String, forKey: "UniqCode")
+                objAccessorieListVC.dictGarmentDetails.setValue(self.appDelegate.dictAddNewGarment.value(forKey: "ClientAdminId") as! String, forKey: "ClientAdminId")
+                objAccessorieListVC.dictGarmentDetails.setValue(self.appDelegate.dictAddNewGarment.value(forKey: "CatalogueId") as! String, forKey: "CatalogueId")
+                objAccessorieListVC.dictGarmentDetails.setValue(self.appDelegate.dictAddNewGarment.value(forKey: "CoverImage") as! String, forKey: "CoverImage")
                 self.navigationController?.pushViewController(objAccessorieListVC, animated: true)
             }
             else
@@ -309,16 +298,17 @@ class ProductDetailsVC: UIViewController,UIScrollViewDelegate,UICollectionViewDe
                 let objAccessoriesDetailsViewController = AccessoriesDetailsViewController(nibName: "AccessoriesDetailsViewController", bundle: nil)
                 
                 objAccessoriesDetailsViewController.isNew = "no"
+                objAccessoriesDetailsViewController.intIndex = indexPath.row-1
                 objAccessoriesDetailsViewController.dictAccessDetails = NSMutableDictionary(dictionary: self.arrAccessory.object(at: indexPath.row-1) as! NSDictionary)
-                objAccessoriesDetailsViewController.dictAccessDetails.setValue(self.dictGarmentDetails.value(forKey: "ClientId") as! String, forKey: "ClientId")
-                objAccessoriesDetailsViewController.dictAccessDetails.setValue(self.dictGarmentDetails.value(forKey: "GarmentId") as! String, forKey: "GarmentId")
-                objAccessoriesDetailsViewController.dictAccessDetails.setValue(self.dictGarmentDetails.value(forKey: "GarmentTitle") as! String, forKey: "GarmentTitle")
-                objAccessoriesDetailsViewController.dictAccessDetails.setValue(self.dictGarmentDetails.value(forKey: "CreatedBy") as! String, forKey: "CreatedBy")
-//                objAccessoriesDetailsViewController.dictAccessDetails.setValue(self.dictGarmentDetails.value(forKey: "Description") as! String, forKey: "Description")
-                objAccessoriesDetailsViewController.dictAccessDetails.setValue(self.dictGarmentDetails.value(forKey: "UniqCode") as! String, forKey: "UniqCode")
-                objAccessoriesDetailsViewController.dictAccessDetails.setValue(self.dictGarmentDetails.value(forKey: "CoverImage") as! String, forKey: "CoverImage")
-                objAccessoriesDetailsViewController.dictAccessDetails.setValue(self.dictGarmentDetails.value(forKey: "ClientAdminId") as! String, forKey: "ClientAdminId")
-                objAccessoriesDetailsViewController.dictAccessDetails.setValue(self.dictGarmentDetails.value(forKey: "CatalogueId") as! String, forKey: "CatalogueId")
+                objAccessoriesDetailsViewController.dictAccessDetails.setValue(self.appDelegate.dictAddNewGarment.value(forKey: "ClientId") as! String, forKey: "ClientId")
+                objAccessoriesDetailsViewController.dictAccessDetails.setValue(self.appDelegate.dictAddNewGarment.value(forKey: "GarmentId") as! String, forKey: "GarmentId")
+                objAccessoriesDetailsViewController.dictAccessDetails.setValue(self.appDelegate.dictAddNewGarment.value(forKey: "GarmentTitle") as! String, forKey: "GarmentTitle")
+                objAccessoriesDetailsViewController.dictAccessDetails.setValue(self.appDelegate.dictAddNewGarment.value(forKey: "CreatedBy") as! String, forKey: "CreatedBy")
+//                objAccessoriesDetailsViewController.dictAccessDetails.setValue(self.self.appDelegate.dictAddNewGarment.value(forKey: "Description") as! String, forKey: "Description")
+                objAccessoriesDetailsViewController.dictAccessDetails.setValue(self.appDelegate.dictAddNewGarment.value(forKey: "UniqCode") as! String, forKey: "UniqCode")
+                objAccessoriesDetailsViewController.dictAccessDetails.setValue(self.appDelegate.dictAddNewGarment.value(forKey: "CoverImage") as! String, forKey: "CoverImage")
+                objAccessoriesDetailsViewController.dictAccessDetails.setValue(self.appDelegate.dictAddNewGarment.value(forKey: "ClientAdminId") as! String, forKey: "ClientAdminId")
+                objAccessoriesDetailsViewController.dictAccessDetails.setValue(self.appDelegate.dictAddNewGarment.value(forKey: "CatalogueId") as! String, forKey: "CatalogueId")
                 
 
                 
@@ -333,7 +323,7 @@ class ProductDetailsVC: UIViewController,UIScrollViewDelegate,UICollectionViewDe
                 
                 let objModelList = ModelList(nibName: "ModelList", bundle: nil)
                 objModelList.arrModelListPrevious = self.arrModel
-                objModelList.strGarmentID = self.dictGarmentDetails.value(forKey: "GarmentId") as! String as NSString
+                objModelList.strGarmentID = self.self.appDelegate.dictAddNewGarment.value(forKey: "GarmentId") as! String as NSString
                 self.navigationController?.pushViewController(objModelList, animated: true)
 
             }
@@ -392,6 +382,8 @@ class ProductDetailsVC: UIViewController,UIScrollViewDelegate,UICollectionViewDe
             }
             
             cell.btnEditPhoto.addTarget(self, action: #selector(self.editGarmentPhoto), for: UIControlEvents.touchUpInside)
+            cell.btnEditPhoto.setImage(UIImage(named: "editName.png"), for: .normal)
+            
 
             
             cell.svMain.contentSize.width = CGFloat(Float(self.tblMain.frame.size.width) * Float(self.arrImgGarment.count))
@@ -403,14 +395,25 @@ class ProductDetailsVC: UIViewController,UIScrollViewDelegate,UICollectionViewDe
             for i in 0..<self.arrImgGarment.count{
                 let imgCatelogue = UIImageView()
                 imgCatelogue.frame = CGRect(x: floatX, y: 0, width: self.tblMain.frame.size.width, height: 251)
-//                imgCatelogue.image = UIImage(named: "\(i+1).jpg")
+                imgCatelogue.image = UIImage(named: "placeholder.png")
                 let dictGDetails = self.arrImgGarment.object(at: i) as! NSDictionary
-                imgCatelogue.setImageWith(NSURL(string: dictGDetails.value(forKey: "MediumImage") as! String)! as URL, placeholderImage: UIImage(named: "placeholder.png"))
+//                imgCatelogue.setImageWith(NSURL(string: dictGDetails.value(forKey: "MediumImage") as! String)! as URL, placeholderImage: UIImage(named: "placeholder.png"))
                 imgCatelogue.tag = 100 + i
                 imgCatelogue.contentMode = UIViewContentMode.scaleAspectFit
                 cell.svMain.addSubview(imgCatelogue)
                 floatX = floatX + self.tblMain.frame.size.width
             }
+            
+            if self.arrImgGarment.count == 0{
+                let imgCatelogue = UIImageView()
+                imgCatelogue.frame = CGRect(x: floatX, y: 0, width: self.tblMain.frame.size.width, height: 251)
+                imgCatelogue.image = UIImage(named: "placeholderAddImages.png")
+                imgCatelogue.tag = 1313
+                imgCatelogue.contentMode = UIViewContentMode.scaleAspectFit
+                cell.svMain.addSubview(imgCatelogue)
+            }
+            
+            
             
             cell.pcImage.backgroundColor = UIColor.clear
             cell.pcImage.transform = CGAffineTransform(scaleX: 2, y: 2)
@@ -425,7 +428,7 @@ class ProductDetailsVC: UIViewController,UIScrollViewDelegate,UICollectionViewDe
             return cell
         }else if indexPath.section == 1{
             let cell : cell_CatelogueName = tableView.dequeueReusableCell(withIdentifier: "id_cell_CatelogueName") as! cell_CatelogueName
-            cell.txtTitle.text = self.dictGarmentDetails.value(forKey: "GarmentTitle") as? String
+            cell.txtTitle.text = self.self.appDelegate.dictAddNewGarment.value(forKey: "GarmentTitle") as? String
             cell.txtTitle.textColor = CONSTANT.color_App.color_CM
             cell.btn_EditTitle.addTarget(self, action: #selector(self.editGarmentTitle), for: UIControlEvents.touchUpInside)
             return cell
@@ -473,85 +476,23 @@ class ProductDetailsVC: UIViewController,UIScrollViewDelegate,UICollectionViewDe
     
     
     
-    func getGarmentDetails(){
-        print("getGarmentDetails...")
-        
-        self.appDelegate.showMBProgressHUD()
-        
-        let strUrl = String(format: "%@?Id=%@", CONSTANT.service_URL.GetGarmentDetails,self.dictGarmentDetails.value(forKey: "GarmentId") as! String)
-        
-        print("strUrl : \(strUrl)")
-        
-        Alamofire.request(strUrl, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: nil).responseJSON { (response:DataResponse<Any>) in
-            
-            self.appDelegate.hideMBProgressHUD()
-            self.refreshControl.endRefreshing()
-
-            
-            switch(response.result){
-            case .success(_):
-                if response.result.value != nil{
-                    let dictRes = response.result.value as! NSDictionary
-                    print("dictRes : \(dictRes)")
-                    
-                    if dictRes["IsError"] as! Bool == false
-                    {
-                        let arrTemp = dictRes.value(forKey: "LstGarment") as! NSArray
-                        if arrTemp.count > 0{
-                            self.dictGarmentDetails.removeAllObjects()
-                            self.arrImgGarment.removeAllObjects()
-                            self.arrAccessory.removeAllObjects()
-                            self.arrEnvironment.removeAllObjects()
-                            
-                            self.dictGarmentDetails = NSMutableDictionary(dictionary: arrTemp.object(at:0) as! NSDictionary)
-                            
-                            if let isGarmentAvailable = self.dictGarmentDetails.value(forKey: "LstGarmentImage") as? NSArray{
-                                if isGarmentAvailable.isKind(of: NSArray.self){
-                                    self.arrImgGarment = NSMutableArray(array: isGarmentAvailable)
-                                }
-                            }
-                            
-                            if let isAcceAvailable = self.dictGarmentDetails.value(forKey: "LstAccessories") as? NSArray{
-                                if isAcceAvailable.isKind(of: NSArray.self){
-                                    self.arrAccessory = NSMutableArray(array: isAcceAvailable)
-                                }
-                            }
-                            
-                            if let isModelAvailable = self.dictGarmentDetails.value(forKey: "LstModelmaster") as? NSArray{
-                                if isModelAvailable.isKind(of: NSArray.self){
-                                    self.arrModel = NSMutableArray(array: isModelAvailable)
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        self.appDelegate.alertValidation(strMessage: CONSTANT.AlretMessage.noData)
-                    }
-                }
-                break
-                
-            case .failure(_):
-                print(response.result.error!)
-                self.appDelegate.hideMBProgressHUD()
-                self.appDelegate.alertValidation(strMessage: response.result.error!.localizedDescription)
-                
-                break
-            }
-            self.tblMain.reloadData()
-        }
-    }
+    
 
     func editGarmentTitle(){
         print("editGarmentTitle...")
-        let objGarmentBasicInfoEdit = GarmentBasicInfoEdit(nibName: "GarmentBasicInfoEdit", bundle: nil)
-        let dictTemp : NSDictionary = self.dictGarmentDetails
-        objGarmentBasicInfoEdit.dictGarmentDetailsNew = NSMutableDictionary(dictionary: dictTemp)
-        self.navigationController?.pushViewController(objGarmentBasicInfoEdit, animated: true)
+//        let objGarmentBasicInfoEdit = GarmentBasicInfoEdit(nibName: "GarmentBasicInfoEdit", bundle: nil)
+//        let dictTemp : NSDictionary = self.self.appDelegate.dictAddNewGarment
+//        objGarmentBasicInfoEdit.dictGarmentDetailsNew = NSMutableDictionary(dictionary: dictTemp)
+//        self.navigationController?.pushViewController(objGarmentBasicInfoEdit, animated: true)
+        
+        self.navigationController?.popViewController(animated: true)
     }
     
     func editGarmentPhoto(){
         print("editGarmentPhoto...")
+         let objSelectMultipleImages = SelectMultipleImages(nibName: "SelectMultipleImages", bundle: nil)
+         self.navigationController?.pushViewController(objSelectMultipleImages, animated: true)
+
 
     }
     

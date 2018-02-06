@@ -25,7 +25,8 @@ class AccessorieListVC: UIViewController,UITableViewDelegate,UITableViewDataSour
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        print("viewDidLoad...")
+
         appDelegate =  UIApplication.shared.delegate as! AppDelegate
 
         imagePicker.delegate = (self as UIImagePickerControllerDelegate & UINavigationControllerDelegate)
@@ -39,6 +40,32 @@ class AccessorieListVC: UIViewController,UITableViewDelegate,UITableViewDataSour
 
 
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        print("viewWillAppear...")
+
+        if self.appDelegate.strCurrentClass == CONSTANT.className.AddNewGarment{
+            print("Same...")
+
+            self.arrList = NSMutableArray(array: self.appDelegate.dictAddNewGarment.value(forKey: "LstAccessories") as! NSArray)
+            
+            self.dictGarmentDetails.setValue(self.appDelegate.dictAddNewGarment.value(forKey: "ClientId") as! String, forKey: "ClientId")
+//                objAccessorieListVC.dictGarmentDetails.setValue(self.appDelegate.dictAddNewGarment.value(forKey: "GarmentId") as! String, forKey: "GarmentId")
+            self.dictGarmentDetails.setValue(self.appDelegate.dictAddNewGarment.value(forKey: "CreatedBy") as! String, forKey: "CreatedBy")
+            self.dictGarmentDetails.setValue(self.appDelegate.dictAddNewGarment.value(forKey: "GarmentTitle") as! String, forKey: "GarmentTitle")
+//                objAccessorieListVC.self.appDelegate.dictAddNewGarment.setValue(self.self.appDelegate.dictAddNewGarment.value(forKey: "Description") as! String, forKey: "Description")
+            self.dictGarmentDetails.setValue(self.appDelegate.dictAddNewGarment.value(forKey: "UniqCode") as! String, forKey: "UniqCode")
+            self.dictGarmentDetails.setValue(self.appDelegate.dictAddNewGarment.value(forKey: "ClientAdminId") as! String, forKey: "ClientAdminId")
+            self.dictGarmentDetails.setValue(self.appDelegate.dictAddNewGarment.value(forKey: "CatalogueId") as! String, forKey: "CatalogueId")
+            self.dictGarmentDetails.setValue(self.appDelegate.dictAddNewGarment.value(forKey: "CoverImage") as! String, forKey: "CoverImage")
+            
+            self.tblView.reloadData()
+        }
+        
+        
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -112,14 +139,26 @@ class AccessorieListVC: UIViewController,UITableViewDelegate,UITableViewDataSour
     @IBAction func action_AddNewAccessory(_ sender: UIButton){
         let objAccessoriesDetailsViewController = AccessoriesDetailsViewController(nibName: "AccessoriesDetailsViewController", bundle: nil)        
         
-        objAccessoriesDetailsViewController.isNew = "yes"
-        objAccessoriesDetailsViewController.dictAccessDetails.setValue(self.dictGarmentDetails.value(forKey: "ClientId") as! String, forKey: "ClientId")
-        objAccessoriesDetailsViewController.dictAccessDetails.setValue(self.dictGarmentDetails.value(forKey: "GarmentId") as! String, forKey: "GarmentId")
-        objAccessoriesDetailsViewController.dictAccessDetails.setValue(self.dictGarmentDetails.value(forKey: "GarmentTitle") as! String, forKey: "GarmentTitle")
-        objAccessoriesDetailsViewController.dictAccessDetails.setValue(self.dictGarmentDetails.value(forKey: "CreatedBy") as! String, forKey: "CreatedBy")
-        objAccessoriesDetailsViewController.dictAccessDetails.setValue(self.dictGarmentDetails.value(forKey: "UniqCode") as! String, forKey: "UniqCode")
-        objAccessoriesDetailsViewController.dictAccessDetails.setValue(self.dictGarmentDetails.value(forKey: "ClientAdminId") as! String, forKey: "ClientAdminId")
-        objAccessoriesDetailsViewController.dictAccessDetails.setValue(self.dictGarmentDetails.value(forKey: "CatalogueId") as! String, forKey: "CatalogueId")
+        if appDelegate.strCurrentClass == CONSTANT.className.AddNewGarment{
+            objAccessoriesDetailsViewController.isNew = "yes"
+            objAccessoriesDetailsViewController.dictAccessDetails.setValue(self.dictGarmentDetails.value(forKey: "ClientId") as! String, forKey: "ClientId")
+//            objAccessoriesDetailsViewController.dictAccessDetails.setValue(self.dictGarmentDetails.value(forKey: "GarmentId") as! String, forKey: "GarmentId")
+            objAccessoriesDetailsViewController.dictAccessDetails.setValue(self.dictGarmentDetails.value(forKey: "GarmentTitle") as! String, forKey: "GarmentTitle")
+            objAccessoriesDetailsViewController.dictAccessDetails.setValue(self.dictGarmentDetails.value(forKey: "CreatedBy") as! String, forKey: "CreatedBy")
+            objAccessoriesDetailsViewController.dictAccessDetails.setValue(self.dictGarmentDetails.value(forKey: "UniqCode") as! String, forKey: "UniqCode")
+            objAccessoriesDetailsViewController.dictAccessDetails.setValue(self.dictGarmentDetails.value(forKey: "ClientAdminId") as! String, forKey: "ClientAdminId")
+            objAccessoriesDetailsViewController.dictAccessDetails.setValue(self.dictGarmentDetails.value(forKey: "CatalogueId") as! String, forKey: "CatalogueId")
+
+        }else{
+            objAccessoriesDetailsViewController.isNew = "yes"
+            objAccessoriesDetailsViewController.dictAccessDetails.setValue(self.dictGarmentDetails.value(forKey: "ClientId") as! String, forKey: "ClientId")
+            objAccessoriesDetailsViewController.dictAccessDetails.setValue(self.dictGarmentDetails.value(forKey: "GarmentId") as! String, forKey: "GarmentId")
+            objAccessoriesDetailsViewController.dictAccessDetails.setValue(self.dictGarmentDetails.value(forKey: "GarmentTitle") as! String, forKey: "GarmentTitle")
+            objAccessoriesDetailsViewController.dictAccessDetails.setValue(self.dictGarmentDetails.value(forKey: "CreatedBy") as! String, forKey: "CreatedBy")
+            objAccessoriesDetailsViewController.dictAccessDetails.setValue(self.dictGarmentDetails.value(forKey: "UniqCode") as! String, forKey: "UniqCode")
+            objAccessoriesDetailsViewController.dictAccessDetails.setValue(self.dictGarmentDetails.value(forKey: "ClientAdminId") as! String, forKey: "ClientAdminId")
+            objAccessoriesDetailsViewController.dictAccessDetails.setValue(self.dictGarmentDetails.value(forKey: "CatalogueId") as! String, forKey: "CatalogueId")
+        }
         
         self.navigationController?.pushViewController(objAccessoriesDetailsViewController, animated: true)
 
@@ -214,12 +253,18 @@ class AccessorieListVC: UIViewController,UITableViewDelegate,UITableViewDataSour
         cell.lbl_AccDes.text = (self.arrList.object(at: indexPath.row) as! NSDictionary).value(forKey: "Description") as? String
 
         
-        let strImgPath = (self.arrList.object(at: indexPath.row) as! NSDictionary).value(forKey: "AccessoriesImage") as! String
-        if strImgPath.count > 0{
-            cell.img_Acc.setImageWith(NSURL(string: strImgPath)! as URL, placeholderImage: UIImage(named: "placeholder.png"))
+        if (self.arrList.object(at: indexPath.row) as! NSDictionary).value(forKey: "AccessoriesId") as! String == ""{
+            let strImgPath = (self.arrList.object(at: indexPath.row) as! NSDictionary).value(forKey: "SmallImage") as! String
+            cell.img_Acc.image = UIImage(contentsOfFile:strImgPath)
         }else{
-            cell.img_Acc.image = UIImage(named:"placeholder.png")
+            let strImgPath = (self.arrList.object(at: indexPath.row) as! NSDictionary).value(forKey: "AccessoriesImage") as! String
+            if strImgPath.count > 0{
+                cell.img_Acc.setImageWith(NSURL(string: strImgPath)! as URL, placeholderImage: UIImage(named: "placeholder.png"))
+            }else{
+                cell.img_Acc.image = UIImage(named:"placeholder.png")
+            }
         }
+        
        
         cell.btn_AccCU.setImage(UIImage(named:"arrow.png"), for: .normal)
         cell.layout_btnW.constant = 22.0

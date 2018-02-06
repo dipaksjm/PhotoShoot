@@ -16,7 +16,8 @@ class ViewController: UIViewController,SWRevealViewControllerDelegate,UITableVie
 
     var arrName = NSArray()
     var arrIcons = NSArray()
-    
+    // MARK: -
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,11 +36,26 @@ class ViewController: UIViewController,SWRevealViewControllerDelegate,UITableVie
         let nib = UINib(nibName: "Cell_Main", bundle: nil)
         tblview.register(nib, forCellReuseIdentifier: "Cell_Main")
         
-        // Do any additional setup after loading the view, typically from a nib.
     }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        let defaults = UserDefaults.standard
+        if let dic  = defaults.object(forKey: "ProfileData"){
+            self.appDelegate.userDataDic = defaults.object(forKey: "ProfileData") as! NSDictionary
+            self.appDelegate.strClientAdminId  = self.appDelegate.userDataDic["ClientAdminId"] as! String
+            self.appDelegate.strClientId  = self.appDelegate.userDataDic["ClientId"] as! String
+            self.appDelegate.strRollID = "\(self.appDelegate.userDataDic["RoleId"] as! NSNumber)"
+        }
+    }
+
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+//        let defaults = UserDefaults.standard
+//        let dictProfileData = defaults.value(forKey: "ProfileData") as! NSDictionary
+//        self.appDelegate.strRollID  = "\(dictProfileData.value(forKey: "RoleId") as! NSNumber)"
     }
     
     override func didReceiveMemoryWarning() {
@@ -51,11 +67,7 @@ class ViewController: UIViewController,SWRevealViewControllerDelegate,UITableVie
         arrName = ["CATALOG MASTER","SCHEDULER","MOOD BOARD", "GARMENT STATUS", "SHOOT DAY", "PHOTO SHOOT SHARE","APPROVAL STAGE","FINAL DELIVERY PHOTO"]
         arrIcons = ["catalogue.png","schedule.png","mood.png","garment.png","shootDay.png","shootShare.png","approval.png","finalDilivary.png"]
     }
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-       // setNavigationBarItemLeft()
-    }
+
     
     // MARK: -
     // MARK: UITableView Method

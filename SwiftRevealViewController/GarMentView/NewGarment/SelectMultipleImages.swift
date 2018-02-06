@@ -8,20 +8,25 @@
 
 import UIKit
 
-class GarmentBasicInfoEdit_Images: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UIImagePickerControllerDelegate,UINavigationControllerDelegate {
-    
+class SelectMultipleImages: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UIImagePickerControllerDelegate,UINavigationControllerDelegate {
+    var appDelegate =  AppDelegate()
     @IBOutlet weak var colView : UICollectionView!
-    var appdel =  AppDelegate()
-    var arrCatalogueList = NSMutableArray()
     @IBOutlet weak var lblHeaderName : UILabel!
     @IBOutlet weak var btnAddDelete : UIButton!
+    
+    var arrCatalogueList = NSMutableArray()
+    
     var dicModelDetail = NSMutableDictionary()
     var arrModelImages = NSMutableArray()
     var arrDeleteImages = NSMutableArray()
     
     var imagePicker = UIImagePickerController()
-    
     var inttotal =  Int()
+    
+    var intClassIndex =  Int()
+    
+    
+    // MARK: -
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,35 +35,38 @@ class GarmentBasicInfoEdit_Images: UIViewController,UICollectionViewDelegate,UIC
         
         print("ADD EDIT arrModelDetail:\(dicModelDetail)")
         
+        self.setupView()
+        self.setupViewOfClass()
         
-        let arrdic  =  NSMutableArray(array: (dicModelDetail.value(forKey: "Lstimages") as? NSArray)!)
-        
-        for i in 0..<arrdic.count
-        {
-            let dictMain : NSMutableDictionary = [:]
-            let dic  = arrdic.object(at: i ) as! NSDictionary
-            let strMediumImage = dic.value(forKey: "FullImage") as? String
-            dictMain.setValue(strMediumImage, forKey: "FullImage")
-            dictMain.setValue(false, forKey: "isManual")
-            dictMain.setValue(false, forKey: "isSelect")
-            dictMain.setValue(dic.value(forKey: "ImageId") as? String, forKey: "ImageId")
-            dictMain.setValue(dic.value(forKey: "OldImage") as? String, forKey: "OldImage")
-            
-            arrModelImages.add(dictMain)
-            
-        }
-        print("arrModelImages :\(arrModelImages)")
-        
-        
-        appdel =  UIApplication.shared.delegate as! AppDelegate
+    }
+    
+    func setupView(){
+        appDelegate =  UIApplication.shared.delegate as! AppDelegate
         
         let nib = UINib(nibName: "Cell_ImageAddedit", bundle: nil)
         self.colView.register(nib, forCellWithReuseIdentifier:"Cell_ImageAddedit")
-        
         self.colView.allowsMultipleSelection = true
         
         self.imagePicker.delegate = self
-        // Do any additional setup after loading the view.
+
+    }
+    func setupViewOfClass(){
+        if intClassIndex == 1{ // ADD NEW GARMENT
+            let arrdic  =  NSMutableArray(array: (dicModelDetail.value(forKey: "Lstimages") as? NSArray)!)
+            
+            for i in 0..<arrdic.count{
+                let dictMain : NSMutableDictionary = [:]
+                let dic  = arrdic.object(at: i ) as! NSDictionary
+                let strMediumImage = dic.value(forKey: "FullImage") as? String
+                dictMain.setValue(strMediumImage, forKey: "FullImage")
+                dictMain.setValue(false, forKey: "isManual")
+                dictMain.setValue(false, forKey: "isSelect")
+                dictMain.setValue(dic.value(forKey: "ImageId") as? String, forKey: "ImageId")
+                dictMain.setValue(dic.value(forKey: "OldImage") as? String, forKey: "OldImage")
+                arrModelImages.add(dictMain)
+            }
+            print("arrModelImages :\(arrModelImages)")
+        }
     }
     
     @IBAction func action_Back(_ sender: Any){
@@ -80,56 +88,13 @@ class GarmentBasicInfoEdit_Images: UIViewController,UICollectionViewDelegate,UIC
         
         self.navigationController?.popViewController(animated: true)
     }
-    
-    @IBAction func action_AddDelete(_ sender: Any){
-        
-        if btnAddDelete.titleLabel?.text == "DELETE" {
-            print("DELETE")
-            
-            for i in 0..<self.arrModelImages.count
-            {
-                for j in 0..<self.arrModelImages.count{
-                    
-                    let dic  = NSMutableDictionary(dictionary: arrModelImages.object(at: j) as! NSDictionary)
-                    if dic.value(forKey: "isSelect") as? Bool == true {
-                        
-                        if dic.value(forKey: "isManual") as? Bool == false {
-                            let dictMain : NSMutableDictionary = [:]
-                            let strImageId = dic.value(forKey: "ImageId") as? String
-                            dictMain.setValue(strImageId, forKey: "ImageId")
-                            self.arrDeleteImages.add(dictMain)
-                        }
-                        
-                        self.arrModelImages.removeObject(at: j)
-                        
-                        break
-                    }
-                }
-            }
-            print("self.arrModelImages \(self.arrModelImages)")
-            print("arrDeleteImages \(self.arrDeleteImages)")
-            
-            self.colView.reloadData()
-            
-            self.setButtonTitle()
-            
-        }
-        else{
-            
-            let alert = UIAlertController(title: "Choose Image", message: nil, preferredStyle: .actionSheet)
-            alert.addAction(UIAlertAction(title: "Camera", style: .default, handler: { _ in
-                self.openCamera()
-            }))
-            
-            alert.addAction(UIAlertAction(title: "Gallery", style: .default, handler: { _ in
-                self.openGallary()
-            }))
-            
-            alert.addAction(UIAlertAction.init(title: "Cancel", style: .cancel, handler: nil))
-            self.present(alert, animated: true, completion: nil)
-        }
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
     }
     
+    // MARK: -
+
     func openCamera()
     {
         if(UIImagePickerController .isSourceTypeAvailable(UIImagePickerControllerSourceType.camera))
@@ -184,10 +149,55 @@ class GarmentBasicInfoEdit_Images: UIViewController,UICollectionViewDelegate,UIC
         
         
     }
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    // MARK: -
+    
+    @IBAction func action_AddDelete(_ sender: Any){
+        
+        if btnAddDelete.titleLabel?.text == "DELETE" {
+            print("DELETE")
+            
+            for i in 0..<self.arrModelImages.count{
+                for j in 0..<self.arrModelImages.count{
+                    
+                    let dic  = NSMutableDictionary(dictionary: arrModelImages.object(at: j) as! NSDictionary)
+                    if dic.value(forKey: "isSelect") as? Bool == true {
+                        
+                        if dic.value(forKey: "isManual") as? Bool == false {
+                            let dictMain : NSMutableDictionary = [:]
+                            let strImageId = dic.value(forKey: "ImageId") as? String
+                            dictMain.setValue(strImageId, forKey: "ImageId")
+                            self.arrDeleteImages.add(dictMain)
+                        }
+                        
+                        self.arrModelImages.removeObject(at: j)
+                        
+                        break
+                    }
+                }
+            }
+            print("self.arrModelImages \(self.arrModelImages)")
+            print("arrDeleteImages \(self.arrDeleteImages)")
+            
+            self.colView.reloadData()
+            
+            self.setButtonTitle()
+            
+        }else{
+            
+            let alert = UIAlertController(title: "Choose Image", message: nil, preferredStyle: .actionSheet)
+            alert.addAction(UIAlertAction(title: "Camera", style: .default, handler: { _ in
+                self.openCamera()
+            }))
+            
+            alert.addAction(UIAlertAction(title: "Gallery", style: .default, handler: { _ in
+                self.openGallary()
+            }))
+            
+            alert.addAction(UIAlertAction.init(title: "Cancel", style: .cancel, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
     }
+
     // MARK: -
     public func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
@@ -226,8 +236,7 @@ class GarmentBasicInfoEdit_Images: UIViewController,UICollectionViewDelegate,UIC
     
     public func collectionView(_ collectionView: UICollectionView,
                                layout collectionViewLayout: UICollectionViewLayout,
-                               sizeForItemAt indexPath: IndexPath) -> CGSize
-    {
+                               sizeForItemAt indexPath: IndexPath) -> CGSize{
         // Iphone
         if  CONSTANT.DeviceType.IS_IPHONE_6
         {
@@ -283,15 +292,9 @@ class GarmentBasicInfoEdit_Images: UIViewController,UICollectionViewDelegate,UIC
             }
         }
     }
-    /*
-     // MARK: - Navigation
+    
+     // MARK: -
      
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     */
     
     
 }
